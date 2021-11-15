@@ -13,7 +13,7 @@ import PostDropdown from './postdropdown'
 const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri }) => {
 
     return (
-        <div className='post'>
+        <div  className='post'>
 
 
             <div className='post__header'>
@@ -46,5 +46,6 @@ const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri }) => {
         </div>
     )
 }
+
 
 export default Post

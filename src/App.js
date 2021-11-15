@@ -7,10 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './component/login/login'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './component/signup/signup'
-import ViewProfile from './component/Viewprofile/index';
+import ViewProfile from './component/viewprofile/profile';
 import Landing from './landing';
-import Aos from "aos";
-import "aos/dist/aos.css";
 
 const App = () => {
 
@@ -32,9 +30,6 @@ const App = () => {
     })
   }, [])
 
-  useEffect(() => {
-    Aos.init({ duration: 2000, offset: 200 });
-  }, []);
 
   return (
 
@@ -51,6 +46,8 @@ const App = () => {
                 <Route exact path='/' element={<Login />} />
                 <Route  path='/signup' element={<Signup />} />
                 <Route exact path='/login' element={<Login />} />
+                <Route path='/profile' element={<ViewProfile user={user} />}  />
+
               </Routes>
             </>
             :
@@ -58,6 +55,8 @@ const App = () => {
               <Routes>
                 <Route path='/profile' element={<ViewProfile user={user} />}  />
                 <Route exact path='/' element={<Landing user={user} />}  />
+                <Route  path='/signup' element={<Signup />} />
+
                </Routes>  
       
           }

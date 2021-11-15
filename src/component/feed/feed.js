@@ -15,14 +15,15 @@ import {
     deleteDoc,
     serverTimestamp,
 } from "firebase/firestore";
-import {  ButtonGroup, ToggleButton } from 'react-bootstrap'
+import { ButtonGroup, ToggleButton } from 'react-bootstrap'
+import Aos from "aos";
+import "aos/dist/aos.css";
 
-const Feed = ({ user  }) => {
+const Feed = ({ user }) => {
 
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
     const [privates, setPrivates] = useState('Public');
-
 
     useEffect(() => {
         db.collection('posts').orderBy("timeStamp", "desc").onSnapshot(snapshot => {
@@ -33,7 +34,7 @@ const Feed = ({ user  }) => {
                 }
             )))
         });
-        
+        Aos.init({ duration: 1000 });
     }, [])
 
 
@@ -44,6 +45,7 @@ const Feed = ({ user  }) => {
     const sendPost = async (e) => {
         e.preventDefault();
         //    console.log(post)
+        if(input){
         await db.collection('posts').add({
             name: user.displayName,
             discription: user.email,
@@ -52,11 +54,12 @@ const Feed = ({ user  }) => {
             timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
             privates: privates
         });
-        setInput()
+    }else(alert('Your post is empty'))
+        setInput("");
     }
 
 
-   function ToggleButtonExample() {
+    function ToggleButtonExample() {
         const radios = [
             { name: 'Pvt', value: 'Private' },
             { name: 'Pub', value: 'Public' },
@@ -128,10 +131,10 @@ const Feed = ({ user  }) => {
 
         if (user.email === editDiary.data.discription) {
             // const privates = setPrivates(!privates);
-                const docRef = doc(db, "posts", editDiary.id);
-                const payload = { privates, timestamp: serverTimestamp() };
+            const docRef = doc(db, "posts", editDiary.id);
+            const payload = { privates, timestamp: serverTimestamp() };
 
-                updateDoc(docRef, payload);
+            updateDoc(docRef, payload);
 
         } else {
             return alert("you can only edit your post ")
@@ -146,10 +149,10 @@ const Feed = ({ user  }) => {
             <div className='feed__inputContainer'>
                 <div className='feed__input'>
                     <CreateIcon />
-                    <form>
-                        <input type='text' placeholder='Start a post' onChange={(e) => setInput(e.target.value)} />
+                    <form >
+                        <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
                         <ToggleButtonExample />
-                       
+
                         <button type='submit' onClick={sendPost}>send</button>
                     </form>
                 </div>
@@ -159,29 +162,28 @@ const Feed = ({ user  }) => {
                     <Inputoption Icon={SubscriptionsIcon} title='Subscription' color='#E7A33E' />
                     <Inputoption Icon={EventIcon} title='Event' color='#C0CBCD' />
                     <Inputoption Icon={CalendarViewDayIcon} title='Write article' color='#7FC15E' />
-                   
-                    
+
+
                 </div>
 
             </div>
 
-            <div className=''>
-           
+            <div className='' >
+
                 {post.map((elem, ind) => {
                     // console.log(elem)
                     if (elem.data.privates === 'Public') {
-                    return <Posts data-aos="flip-down"
-                     key={ind}
-                        name={elem.data.name}
-                        // description={elem.data.discription}
-                        privacy={elem.data.privates}
-                        message={elem.data.message}
-                        photoUrl={elem.data.photoURL}
-                        Edit={() => { editPost(elem) }}
-                        Delete={() => { deletePost(elem) }}
-                        Pri={()=>{editPrivacy(elem) }}
-                    />
-
+                        return <div data-aos="zoom-in-up" key={ind}><Posts
+                            key={ind}
+                            name={elem.data.name}
+                            // description={elem.data.discription}
+                            privacy={elem.data.privates}
+                            message={elem.data.message}
+                            photoUrl={elem.data.photoURL}
+                            Edit={() => { editPost(elem) }}
+                            Delete={() => { deletePost(elem) }}
+                            Pri={() => { editPrivacy(elem) }}
+                        /></div>
                     }
                 })}
 

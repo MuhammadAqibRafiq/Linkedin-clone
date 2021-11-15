@@ -1,6 +1,7 @@
 .feed{
     /* flex: 0.6; */
     margin: 0 20px;
+    z-index: 1;
 }
 .feed__inputContainer{
     background: white;

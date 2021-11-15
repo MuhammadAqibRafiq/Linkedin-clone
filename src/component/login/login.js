@@ -5,12 +5,14 @@ import { auth} from '../../firebase';
 import './login.css';
 import { Container, Row, Col, Button } from "react-bootstrap";
 import AboutLeft from './pic.svg';
+import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     const logintoapp = async (e) => {
         e.preventDefault();
@@ -22,6 +24,8 @@ const Login = () => {
                 photoURL: userAuth.user.photoURL,
             }))
         })
+        navigate('/')
+
     }
 
     return (
