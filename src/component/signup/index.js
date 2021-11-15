@@ -41,6 +41,7 @@ const Index = () => {
                     })
             })
             .catch((error) => alert(error));
+            navigate('/')
     }
 
     const signInwithgoogle = () => {

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './component/login/login'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './component/signup/signup'
-import ViewProfile from './component/viewprofile/profile';
+import ViewProfile from './component/Viewprofile/profile';
 import Landing from './landing';
 
 const App = () => {
