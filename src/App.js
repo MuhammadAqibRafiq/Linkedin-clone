@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import Header from './component/header/header';
-import Sidebar from './component/sidebar/sidebar';
-import Feed from './component/feed/feed';
 import { login, logout, selectUser } from './features/userSlice';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from './component/login/login'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Signup from './component/signup/signup'
+import ViewProfile from './component/Viewprofile/index';
+import Landing from './landing';
+
 
 const App = () => {
 
   const user = useSelector(selectUser);
   const dispatch = useDispatch()
-  console.log(user)
+  // console.log(user)
 
   useEffect(() => {
     auth.onAuthStateChanged(userAuth => {
@@ -29,23 +32,33 @@ const App = () => {
   }, [])
 
   return (
-    <div className="App">
 
-      <Header user={user} />
+    <Router>
+      <div className="App">
 
-      <div className="App__body">
+        <Header user={user} />
 
-        {!user ?
-          <Login />
-          :
-          <>
-            <Sidebar user={user}/>
-            <Feed user={user} />
-          </>
-        }
+        <div className="App__body container py-2">
+
+          {!user ?
+            <>
+              <Routes>
+                <Route exact path='/' element={<Login />} />
+                <Route  path='/signup' element={<Signup />} />
+                <Route exact path='/login' element={<Login />} />
+              </Routes>
+            </>
+            :
+           
+              <Routes>
+                <Route path='/profile' element={<ViewProfile user={user} />}  />
+                <Route exact path='/' element={<Landing user={user} />}  />
+               </Routes>  
+      
+          }
+        </div>
       </div>
-    </div>
-
+    </Router>
   );
 }
 

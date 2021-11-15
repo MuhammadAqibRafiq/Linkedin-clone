@@ -1,10 +1,8 @@
 .feed{
-    flex: 0.6;
+    /* flex: 0.6; */
     margin: 0 20px;
 }
 .feed__inputContainer{
-    /* display: flex;
-    justify-content: space-evenly; */
     background: white;
     padding: 10px;
     padding-bottom: 20px;
@@ -18,6 +16,7 @@
     padding: 10px;
     color: gray;
     padding-left: 15px;
+    align-items: center;
 }
 .feed__input >form{
     display: flex;
@@ -28,7 +27,7 @@
     border: none;
     margin-left: 10px;
     outline-width: 0;
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 .feed__input > form >button {
     display: none;
@@ -52,3 +51,49 @@
 .inputoption > h4 {
     margin-left: 5px;
 }
+
+@media only screen and (max-width: 540px) {
+        .inputoption{
+            flex-direction: column;
+        }
+        .inputoption > h4 {
+        margin-left: 0px;
+        font-weight: 700;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 440px) {
+    .feed{
+        margin: 0 ;
+    }
+    .btn-group > .btn{
+        font-size: 10px !important;
+        padding: 5px !important;
+    }
+} 
+@media only screen and (max-width: 340px) {
+    .inputoption > h4 {
+        margin-left: 0px;
+        font-weight: 500;
+        font-size: 12px;
+    }
+    .feed{
+        margin: 0 ;
+    }
+    .btn-group > .btn{
+        font-size: 10px !important;
+        padding: 2px !important;
+    }
+} 
+@media only screen and (max-width: 330px) {
+   
+    .btn-group > .btn{
+        font-size: 7px !important;
+        padding: 3px !important;
+    }
+} 
+
+
+
+

@@ -8,50 +8,81 @@
     padding-bottom: 10px;
     width: 100%;
     background: white;
-}
-.header__left{
+} 
+ .header__left{
     display: flex;
-}
-.header__left > img{
+} 
+ .header__left > img{
     object-fit: contain;
     height: 40px;
     margin-right: 10px;
 }
-.header__search{
+
+
+ .header__search{
     display: flex;
     padding: 10px;
     align-items: center;
     color: gray;
     background: #eef3f8;
-    height: 22px;
     border: 5px;
     border-radius: 5px;
+    margin-left: 10px;
 }
 .header__search > input {
     outline: none;
     border: none;
     background: none;
-}
-.header__right{
+    flex: 0.2;
+} 
+.header__logo{
     display: flex;
+    align-items: center;
+    color: #0077b5;
+    border: 5px;
+    border-radius: 5px;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 30px;
 }
-.headeroption{
+.header__joinnow:hover{
+    background: rgb(199, 196, 196) !important;
+    border-radius: 40px !important;
+}
+
+.headeroption {
     display: flex;
     flex-direction: column;
     align-items: center;
     color: gray;
     margin-right: 20px;
     cursor: pointer;
+    justify-content: center;
 }
-.headeroption:hover{
+.headeroption:hover {
     color: black;
 }
-.headeroption__title{
+.headeroption__title {
     font-size: 12px ;
     font-weight: 400;
 }
-.headeroption__icon{
+.headeroption__icon {
     object-fit: contain;
     height: 30px !important;
     width: 30px !important;
+}
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+
+@media only screen and (max-width: 460px) {
+    .header__search > input {
+        font-size: 10px !important;
+    }
+}
+@media only screen and (max-width: 350px) {
+    .header__search > input {
+        font-size: 7px !important;
+    }
 }

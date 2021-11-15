@@ -6,6 +6,7 @@
 }
 .post__header{
     display: flex;
+    justify-content:space-between;
     margin-bottom: 10px;
 }
 .post__info{
@@ -24,4 +25,9 @@
 .post__button{
     display: flex;
     justify-content: space-evenly;
+}
+#dropdown-item-button{
+    color: black !important;
+    background: white;
+    border: white;
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import './feed.css'
 
-const Inputoption = ({Icon , title , color}) => {
+const Inputoption = ({Icon , title , color , onClick}) => {
     return (
         <div className='inputoption'>
             <Icon style={{color:color}} />

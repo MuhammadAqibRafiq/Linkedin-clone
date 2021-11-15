@@ -2,14 +2,7 @@ import { Avatar } from '@material-ui/core'
 import React from 'react'
 import './sidebar.css'
 
-const sidebar = ({user}) => {
-
-    // const recentItem=(topics)=>{
-    //     <div className='sidebar__recentitem'>
-    //         <span className='sidebar__hash'> #</span>
-    //         <p>{topics}</p>
-    //     </div>
-    // }
+const sidebar = ({ user }) => {
 
     return (
         <div className='sidebar'>
@@ -18,7 +11,7 @@ const sidebar = ({user}) => {
                 <img src='https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' alt='' />
                 <Avatar className='sidebar__avatar' src={user ? user.photoURL : null} alt={user ? user.displayName : null} />
                 <h2>{user ? user.displayName : null}</h2>
-                <h4>{user ? user.email : null}</h4>
+                <h4 style={{ padding: '10px' }}>{user ? user.email : null}</h4>
             </div>
 
             <div className='sidebar__stats' >
@@ -39,30 +32,22 @@ const sidebar = ({user}) => {
                 <div className='sidebar__recentitem'>
                     <span className='sidebar__hash'> #</span>
                     <p>react.js</p>
-                    </div>
+                </div>
 
-                    <div className='sidebar__recentitem'>
+                <div className='sidebar__recentitem'>
                     <span className='sidebar__hash'> #</span>
                     <p>gatsby</p>
-                    </div>
+                </div>
 
-                    <div className='sidebar__recentitem'>
+                <div className='sidebar__recentitem'>
                     <span className='sidebar__hash'> #</span>
                     <p>netlify</p>
-                    </div>
-                    
-                    <div className='sidebar__recentitem'>
+                </div>
+
+                <div className='sidebar__recentitem'>
                     <span className='sidebar__hash'> #</span>
                     <p>jamstack</p>
                 </div>
-
-
-                {/* {recentItem('react.js')}
-                    {recentItem('programmig')}
-                    {recentItem('netlify')}
-                    {recentItem('jamstack')} */}
-
-
 
             </div>
 

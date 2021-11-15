@@ -1,0 +1,80 @@
+.signup__main{
+    display: flex;
+    justify-content: center;
+}
+.signup{
+    background: rgb(252, 252, 252);
+    flex: 0.3;
+    margin-top: 10px;
+    border: 10px;
+}
+.signup__inputcontainer{
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+}
+.signup__inputcontainer > input {
+    padding: 5px;
+    margin: 10px;
+}
+.signup__inputcontainer > p {
+    margin: 10px;
+    font-size: 13px;
+    font-weight: 400;
+}
+.signup__inputcontainer > button {
+    margin: 10px;
+}
+
+
+
+
+.signup__header{
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+.googleheaderoption {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+    justify-content: center;
+}
+.googleheaderoption:hover {
+    color: black;
+}
+.googleheaderoption__title {
+     font-size: 16px ;
+    font-weight: 700; 
+    /* color: #0d6efd; */
+    padding-left: 10px;
+    padding-top: 4px;
+}
+.googleheaderoption__icon {
+    object-fit: contain;
+    height: 30px !important;
+    width: 30px !important;
+}
+
+
+
+@media only screen and (max-width: 440px) {
+    .signup__header > h4 {
+        font-size: 15px !important;
+    }
+    .signup__main {
+        display: contents;
+    }
+}
+@media only screen and (max-width: 360px) {
+    .signup__main {
+        display: contents;
+    }
+}
+
+.ghgh{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
