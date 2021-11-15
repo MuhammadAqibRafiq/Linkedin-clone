@@ -61,7 +61,7 @@ const Header = ({ user }) => {
                     {user ?
                         <Nav className='d-flex justify-content-end' >
 
-                           <Nav.Link className='d-flex' as={Link} to="/"><HeaderOption Icon={Home} title='Home' /> </Nav.Link>
+                           <Nav.Link className='d-flex justify-content-center' as={Link} to="/"><HeaderOption Icon={Home} title='Home' /> </Nav.Link>
                             <HeaderOption Icon={SupervisorAccount} title='My Network' />
                             <HeaderOption Icon={ChatBubbleIcon} title='Chat' />
                             <HeaderOption Icon={WorkIcon} title='Job' />

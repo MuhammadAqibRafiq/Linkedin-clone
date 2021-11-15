@@ -62,8 +62,28 @@
         font-size: 15px;
     }
 }
+@media only screen and (max-width: 340px) {
+    .inputoption > h4 {
+        margin-left: 0px;
+        font-weight: 500;
+        font-size: 12px;
+    }
+   
+    
+} 
 
-@media only screen and (max-width: 440px) {
+@media only screen and (max-width: 380px) {
+    .btn-group > .btn{
+        display: none;
+    }
+}
+
+
+
+
+
+
+/* @media only screen and (max-width: 460px) {
     .feed{
         margin: 0 ;
     }
@@ -72,27 +92,21 @@
         padding: 5px !important;
     }
 } 
-@media only screen and (max-width: 340px) {
-    .inputoption > h4 {
-        margin-left: 0px;
-        font-weight: 500;
-        font-size: 12px;
-    }
-    .feed{
-        margin: 0 ;
-    }
+
+@media only screen and (max-width: 390px) {
+  
     .btn-group > .btn{
-        font-size: 10px !important;
-        padding: 2px !important;
+        font-size: 5px !important;
+        padding: 1px !important;
     }
 } 
-@media only screen and (max-width: 330px) {
+@media only screen and (max-width: 350px) {
    
     .btn-group > .btn{
-        font-size: 7px !important;
+        font-size: 3px !important;
         padding: 3px !important;
     }
-} 
+}  */
 
 
 

@@ -58,8 +58,8 @@ const Feed = ({ user  }) => {
 
    function ToggleButtonExample() {
         const radios = [
-            { name: 'Private', value: 'Private' },
-            { name: 'Public', value: 'Public' },
+            { name: 'Pvt', value: 'Private' },
+            { name: 'Pub', value: 'Public' },
         ];
 
         return (
