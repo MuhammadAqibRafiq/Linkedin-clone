@@ -170,7 +170,8 @@ const Feed = ({ user  }) => {
                 {post.map((elem, ind) => {
                     // console.log(elem)
                     if (elem.data.privates === 'Public') {
-                    return <Posts key={ind}
+                    return <Posts data-aos="flip-down"
+                     key={ind}
                         name={elem.data.name}
                         // description={elem.data.discription}
                         privacy={elem.data.privates}

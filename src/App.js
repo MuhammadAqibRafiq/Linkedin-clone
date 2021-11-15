@@ -9,7 +9,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './component/signup/signup'
 import ViewProfile from './component/Viewprofile/index';
 import Landing from './landing';
-
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const App = () => {
 
@@ -30,6 +31,10 @@ const App = () => {
       else { dispatch(logout()) };
     })
   }, [])
+
+  useEffect(() => {
+    Aos.init({ duration: 2000, offset: 200 });
+  }, []);
 
   return (
 

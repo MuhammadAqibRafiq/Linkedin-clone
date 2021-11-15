@@ -73,8 +73,8 @@
 } 
 
 @media only screen and (max-width: 380px) {
-    .btn-group > .btn{
-        display: none;
+    .feed__input > form > .btn-group > .btn{
+        display: none !important;
     }
 }
 
