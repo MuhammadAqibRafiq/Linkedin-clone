@@ -44,7 +44,6 @@ const Index = () => {
                         }))
                     })
             })
-<<<<<<< HEAD
              navigate('/');
             const toasts =  toast.success('Sign Up Succesfully', {
                 autoClose: 5000,
@@ -57,13 +56,7 @@ const Index = () => {
                 });
             };
 
-           
-=======
-            .catch((error) => alert(error));
 
-         navigate('/')
-
->>>>>>> 849f34c69324ed33de8602ae459a38302e42d6d7
     }
 
     const signInwithgoogle = () => {
