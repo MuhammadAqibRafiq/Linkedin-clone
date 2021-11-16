@@ -41,11 +41,7 @@ const Index = () => {
                     })
             })
             .catch((error) => alert(error));
-<<<<<<< HEAD
             navigate('/')
-=======
-         navigate('/')
->>>>>>> 8cf505299cd23a8377b672d86dad03be756dae06
     }
 
     const signInwithgoogle = () => {
