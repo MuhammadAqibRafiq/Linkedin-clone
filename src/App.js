@@ -43,9 +43,9 @@ const App = () => {
           {!user ?
             <>
               <Routes>
-                <Route exact path='/' element={<Login />} />
-                <Route  path='/signup' element={<Signup />} />
-                <Route exact path='/login' element={<Login />} />
+                <Route exact path='/' element={<Login />} user={user} />
+                <Route  path='/signup' element={<Signup />} user={user} />
+                <Route exact path='/login' element={<Login />} user={user} />
                 <Route path='/profile' element={<ViewProfile user={user} />}  />
 
               </Routes>
@@ -55,7 +55,7 @@ const App = () => {
               <Routes>
                 <Route path='/profile' element={<ViewProfile user={user} />}  />
                 <Route exact path='/' element={<Landing user={user} />}  />
-                <Route  path='/signup' element={<Signup />} />
+                <Route  path='/signup' element={<Signup />} user={user} />
 
                </Routes>  
       

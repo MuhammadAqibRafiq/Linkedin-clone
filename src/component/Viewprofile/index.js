@@ -19,6 +19,7 @@ import {
 // import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { Avatar } from '@material-ui/core'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const Index = ({ user }) => {
@@ -48,16 +49,20 @@ const Index = ({ user }) => {
     const sendPost = async (e) => {
         e.preventDefault();
         //    console.log(post)
-        if(input){
-        await db.collection('posts').add({
-            name: user.displayName,
-            discription: user.email,
-            message: input,
-            photoURL: user.photoURL || '',
-            timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-            privates: privates
-        });
-    }else(alert('Your post is empty'))
+        if (input) {
+            await db.collection('posts').add({
+                name: user.displayName,
+                discription: user.email,
+                message: input,
+                photoURL: user.photoURL || '',
+                timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                privates: privates
+            } )
+            const toasts =  toast.success("Your post is Live Now") 
+           
+        } else (
+            toast.info('Your post is empty')
+        )
         setInput("");
     }
 
@@ -102,9 +107,11 @@ const Index = ({ user }) => {
             const docRef = doc(db, "posts", deleteDiary.id);
             await deleteDoc(docRef);
 
-        } else {
-            return alert("you can only delete your post")
-        }
+            const toasts =  toast.error("Post delete successfully") 
+
+        } else (
+            toast.info("you can only delete your post")
+        )
     }
 
     const editPost = async (editDiary) => {
@@ -119,12 +126,15 @@ const Index = ({ user }) => {
                 const payload = { message, timestamp: serverTimestamp() };
 
                 updateDoc(docRef, payload);
-            }
-            else { return alert("Post is empty") }
 
-        } else {
-            return alert("you can only edit your post ")
-        }
+                const toasts =  toast.success("Post Edit successfully") 
+            }
+            else (
+                toast.error("empty post can't be edit")
+            )
+        } else (
+            toast.error("you can only edit your own post")
+        )
 
     };
 
@@ -139,19 +149,19 @@ const Index = ({ user }) => {
 
             updateDoc(docRef, payload);
 
-        } else {
-            return alert("you can only edit your post ")
-        }
-
+        }   else (
+            toast.error("you can only edit your post ")
+        )
     };
 
 
     return (
         <div className='feed'>
+            <ToastContainer  theme= "colored" autoClose= {4000} position= "bottom-right"/>
 
             <div className='profile__top mb-4'>
-                 <img src='https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' alt='' />
-                 <Avatar className='profile__avatar' src={user ? user.photoURL : null} alt={user ? user.displayName : null} />
+                <img src='https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' alt='' />
+                <Avatar className='profile__avatar' src={user ? user.photoURL : null} alt={user ? user.displayName : null} />
                 <h2>{user ? user.displayName : null}</h2>
                 <h4 >{user ? user.email : null}</h4>
             </div>
@@ -191,7 +201,7 @@ const Index = ({ user }) => {
                             Pri={() => { editPrivacy(elem) }}
                         />
 
-                        
+
                     }
                 })}
 

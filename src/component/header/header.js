@@ -14,6 +14,7 @@ import { auth } from '../../firebase';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom'
 import {useNavigate} from 'react-router-dom';
+import { Avatar } from '@material-ui/core'
 
 
 const Header = ({ user }) => {
@@ -77,7 +78,7 @@ const Header = ({ user }) => {
                                 <HeaderOption avatar={user ? user.photoURL : null} title='Me' alt={user ? user.displayName : null} />
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
-                                <NavDropdown.Item onClick={Logouts}>Setting</NavDropdown.Item>
+                                {/* <NavDropdown.Item onClick={Logouts}>Setting</NavDropdown.Item> */}
                                 <NavDropdown.Item onClick={Logouts}>Sign Out</NavDropdown.Item>
                             </NavDropdown>
 

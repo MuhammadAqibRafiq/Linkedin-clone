@@ -9,6 +9,7 @@ import Google from './google.png';
 import { Link } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Index = () => {
 
@@ -21,11 +22,14 @@ const Index = () => {
     const navigate = useNavigate();
 
 
-    const register = () => {
+    const register = async () => {
         if (!fullname) {
-            return alert("Enter a fullname")
+            toast.error('Fullname is necessary', {
+                autoClose: 5000,
+            })
         }
-        auth.createUserWithEmailAndPassword(email, password)
+        try {
+       await auth.createUserWithEmailAndPassword(email, password)
             .then((userAuth) => {
                 userAuth.user.updateProfile({
                     displayName: fullname,
@@ -40,8 +44,19 @@ const Index = () => {
                         }))
                     })
             })
-            .catch((error) => alert(error));
-            navigate('/')
+             navigate('/');
+            const toasts =  toast.success('Sign Up Succesfully', {
+                autoClose: 5000,
+            })
+        }
+            catch (error) {
+                toast.error(error.message, {
+                    theme: "colored",
+                    autoClose: 4000
+                });
+            };
+
+           
     }
 
     const signInwithgoogle = () => {
@@ -68,11 +83,15 @@ const Index = () => {
                 // ...
             });
             navigate('/')
+            const toasts =  toast.success('Login Succesfully', {
+                autoClose: 5000,
+            })
     }
 
     return (
         <div className='signup'>
-            {/* <div className='d-flex justify-content-center'><h4>Make the most of your professional life</h4></div> */}
+            
+            <ToastContainer />
 
             <div className='signup__inputcontainer'>
 

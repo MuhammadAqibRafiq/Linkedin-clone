@@ -18,12 +18,17 @@ import {
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import Aos from "aos";
 import "aos/dist/aos.css";
+// import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const Feed = ({ user }) => {
 
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
     const [privates, setPrivates] = useState('Public');
+    // const [img, setImg] = useState('');
+
 
     useEffect(() => {
         db.collection('posts').orderBy("timeStamp", "desc").onSnapshot(snapshot => {
@@ -45,16 +50,20 @@ const Feed = ({ user }) => {
     const sendPost = async (e) => {
         e.preventDefault();
         //    console.log(post)
-        if(input){
-        await db.collection('posts').add({
-            name: user.displayName,
-            discription: user.email,
-            message: input,
-            photoURL: user.photoURL || '',
-            timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-            privates: privates
-        });
-    }else(alert('Your post is empty'))
+        if (input) {
+            await db.collection('posts').add({
+                name: user.displayName,
+                discription: user.email,
+                message: input,
+                photoURL: user.photoURL || '',
+                timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                privates: privates
+            })
+              const toasts =  toast.success("Your post is Live Now") 
+            
+        } else (
+             toast.info('Your post is empty')
+        )
         setInput("");
     }
 
@@ -99,9 +108,11 @@ const Feed = ({ user }) => {
             const docRef = doc(db, "posts", deleteDiary.id);
             await deleteDoc(docRef);
 
-        } else {
-            return alert("you can only delete your post")
-        }
+            const toasts =  toast.error("Post delete successfully") 
+
+        } else (
+            toast.info("you can only delete your post") 
+        )
     }
 
     const editPost = async (editDiary) => {
@@ -116,12 +127,15 @@ const Feed = ({ user }) => {
                 const payload = { message, timestamp: serverTimestamp() };
 
                 updateDoc(docRef, payload);
-            }
-            else { return alert("Post is empty") }
 
-        } else {
-            return alert("you can only edit your post ")
-        }
+                const toasts =  toast.success("Post Edit successfully") 
+
+            } else (
+                toast.error("empty post can't be edit") 
+            )
+        } else (
+            toast.error("you can only edit your own post") 
+        )
 
     };
 
@@ -136,15 +150,16 @@ const Feed = ({ user }) => {
 
             updateDoc(docRef, payload);
 
-        } else {
-            return alert("you can only edit your post ")
-        }
+        } else (
+            toast.error("you can only edit your post ")
+        )
 
     };
 
 
     return (
         <div className='feed'>
+                    <ToastContainer  theme= "colored" autoClose= {4000} position= "bottom-right"/>
 
             <div className='feed__inputContainer'>
                 <div className='feed__input'>
@@ -152,9 +167,12 @@ const Feed = ({ user }) => {
                     <form >
                         <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
                         <ToggleButtonExample />
-
                         <button type='submit' onClick={sendPost}>send</button>
                     </form>
+                    {/* <form >
+                        <input type='file' value={file} onChange={(e) => setFile(e.target.files[0])} />
+                        <button type='submit' onClick={onUpload}>send</button>
+                    </form> */}
                 </div>
 
                 <div className='feed__inputoptions'>
@@ -162,7 +180,6 @@ const Feed = ({ user }) => {
                     <Inputoption Icon={SubscriptionsIcon} title='Subscription' color='#E7A33E' />
                     <Inputoption Icon={EventIcon} title='Event' color='#C0CBCD' />
                     <Inputoption Icon={CalendarViewDayIcon} title='Write article' color='#7FC15E' />
-
 
                 </div>
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../../features/userSlice';
-import { auth} from '../../firebase';
+import { auth } from '../../firebase';
 import './login.css';
 import { Container, Row, Col, Button } from "react-bootstrap";
 import AboutLeft from './pic.svg';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
 
@@ -16,20 +17,31 @@ const Login = () => {
 
     const logintoapp = async (e) => {
         e.preventDefault();
-        auth.signInWithEmailAndPassword(email, password).then(userAuth => {
-            dispatch(login({
-                uid: userAuth.uid,
-                email: userAuth.user.email,
-                displayName: userAuth.user.displayName,
-                photoURL: userAuth.user.photoURL,
-            }))
-        })
-        navigate('/')
+        try {
+            await auth.signInWithEmailAndPassword(email, password).then(userAuth => {
+                dispatch(login({
+                    uid: userAuth.uid,
+                    email: userAuth.user.email,
+                    displayName: userAuth.user.displayName,
+                    photoURL: userAuth.user.photoURL,
+                }))
+            })
+            navigate('/');
+           const toasts =  toast.success('Login Succesfully', {
+                autoClose: 5000,
+            })
+        }
+        catch (error) {
+            toast.error(error.message, {
+                theme: "colored",
+                autoClose: 4000
+            });
+        }
 
     }
 
     return (
- 
+
         <Container className="py-5" >
             <Row >
 
@@ -46,7 +58,7 @@ const Login = () => {
 
                     <br />
                     <br />
-                    <p>By clicking Agree & Join, you agree to the LinkedIn  
+                    <p>By clicking Agree & Join, you agree to the LinkedIn
                         <span style={{ color: "#0b67c3", fontWeight: "600" }}>
                             <a href='https://www.linkedin.com/legal/user-agreement?trk=homepage-basic_join-form-user-agreement' target="_blank" rel="noopener noreferrer"> User Agreement,</a>
                             <a href='https://www.linkedin.com/legal/privacy-policy?trk=homepage-basic_join-form-privacy-policy' target="_blank" rel="noopener noreferrer"> Privacy Policy,</a>
@@ -54,7 +66,8 @@ const Login = () => {
                             <a href='https://www.linkedin.com/legal/cookie-policy?trk=homepage-basic_join-form-cookie-policy' target="_blank" rel="noopener noreferrer">Cookie Policy.</a></span></p>
 
                     <Button onClick={logintoapp} className="abhire-btn" style={{ width: "80%", borderRadius: "20px" }} target="_blank" >Agree & Join</Button>
-
+                  
+                    <ToastContainer />
 
                 </Col>
 
