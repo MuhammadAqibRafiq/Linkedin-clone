@@ -3,9 +3,10 @@ import './feed.css'
 
 const Inputoption = ({Icon , title , color , onClick}) => {
     return (
-        <div className='inputoption'>
-            <Icon style={{color:color}} />
-            <h4>{title}</h4>
+        <div className='inputoption' onClick={onClick} >
+
+            <Icon style={{color:color}}  />
+            <h4 >{title} </h4>
         </div>
     )
 }

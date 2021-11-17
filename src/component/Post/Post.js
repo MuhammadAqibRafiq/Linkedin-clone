@@ -10,7 +10,7 @@ import PostDropdown from './postdropdown'
 
 
 
-const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri }) => {
+const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri , src}) => {
 
     return (
         <div  className='post'>
@@ -34,6 +34,10 @@ const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri }) => {
 
             <div className='post__body'>
                 <p>{message}</p>
+                <div className='d-flex'>
+                <img width='100%' src={src} onError={(event) => event.target.removeAttribute('src')} />
+                {/* <img width='100%' src={src} onError={(event) => event.target.removeAttribute('src')} /> */}
+                </div>
             </div>
 
             <div className='post__button'>

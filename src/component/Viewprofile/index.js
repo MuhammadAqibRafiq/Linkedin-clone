@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect , useRef } from 'react'
 import './profile.css';
 import '../feed/feed.css'
 import CreateIcon from '@material-ui/icons/Create'
@@ -8,7 +8,7 @@ import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import EventIcon from '@mui/icons-material/Event';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import Posts from '../Post/Post';
-import { db } from '../../firebase'
+import { db, storage } from '../../firebase'
 import firebase from 'firebase/compat/app';
 import {
     updateDoc,
@@ -16,17 +16,24 @@ import {
     deleteDoc,
     serverTimestamp,
 } from "firebase/firestore";
-// import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { Avatar } from '@material-ui/core'
 import { ToastContainer, toast } from 'react-toastify';
-
+import 'firebase/storage'
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import SendIcon from '@mui/icons-material/Send';
 
 const Index = ({ user }) => {
 
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
     const [privates, setPrivates] = useState('Public');
+    const [singleImg, setSingleImg] = useState(null);
+    const inputUpload = useRef();
+    const [progress, setProgress] = useState(0);
+
+
+    const milliseconds = new Date().getTime()
 
 
     useEffect(() => {
@@ -46,25 +53,25 @@ const Index = ({ user }) => {
     // console.log(user)
     // console.log(post)
 
-    const sendPost = async (e) => {
-        e.preventDefault();
-        //    console.log(post)
-        if (input) {
-            await db.collection('posts').add({
-                name: user.displayName,
-                discription: user.email,
-                message: input,
-                photoURL: user.photoURL || '',
-                timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-                privates: privates
-            } )
-            const toasts =  toast.success("Your post is Live Now") 
+    // const sendPost = async (e) => {
+    //     e.preventDefault();
+    //     //    console.log(post)
+    //     if (input) {
+    //         await db.collection('posts').add({
+    //             name: user.displayName,
+    //             discription: user.email,
+    //             message: input,
+    //             photoURL: user.photoURL || '',
+    //             timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+    //             privates: privates
+    //         } )
+    //         const toasts =  toast.success("Your post is Live Now") 
            
-        } else (
-            toast.info('Your post is empty')
-        )
-        setInput("");
-    }
+    //     } else (
+    //         toast.info('Your post is empty')
+    //     )
+    //     setInput("");
+    // }
 
 
     function ToggleButtonExample() {
@@ -155,6 +162,111 @@ const Index = ({ user }) => {
     };
 
 
+
+    function handleImage(e) {
+        e.preventDefault();
+        let pickedfile;
+        if (e.target.files && e.target.files.length > 0) {
+            pickedfile = e.target.files[0];
+            setSingleImg(pickedfile)
+
+        }
+    }
+
+    function uploadImage(e) {
+        e.preventDefault();
+
+        //////its not a smart way but i didnt got any other solution /////
+
+        if (input && singleImg) {
+            const uploadTask = storage.ref(`SingleImage/${milliseconds}`)
+                .put(singleImg)
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    console.log(progress)
+                    setProgress(progress)
+                },
+                (err) => {
+                    console.log(err)
+                },
+                () => {
+                    storage.ref(`SingleImage/${milliseconds}`)
+                        .getDownloadURL()
+                        .then((imageUrl) => {
+                            db.collection('posts')
+                                .add({
+                                    name: user.displayName,
+                                    discription: user.email,
+                                    message: input,
+                                    photoURL: user.photoURL || '',
+                                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                                    privates: privates,
+                                    imgUrl: imageUrl || '',
+                                })
+                        }
+                        )
+                }
+            )
+            const toasts = toast.success("Your post is Live Now")
+        }
+        else if (singleImg) {
+            const uploadTask = storage.ref(`SingleImage/${milliseconds}`)
+                .put(singleImg)
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    console.log(progress)
+                    setProgress(progress)
+
+                },
+                (err) => {
+                    console.log(err)
+                },
+                () => {
+                    storage.ref(`SingleImage/${milliseconds}`)
+                        .getDownloadURL()
+                        .then((imageUrl) => {
+                            db.collection('posts')
+                                .add({
+                                    name: user.displayName,
+                                    discription: user.email,
+                                    message: input,
+                                    photoURL: user.photoURL || '',
+                                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                                    privates: privates,
+                                    imgUrl: imageUrl || '',
+                                })
+                        }
+                        )
+                }
+            )
+            const toasts = toast.success("Your post is Live Now")
+
+        } else if (input) {
+            db.collection('posts')
+                .add({
+                    name: user.displayName,
+                    discription: user.email,
+                    message: input,
+                    photoURL: user.photoURL || '',
+                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    privates: privates,
+                    // imgUrl: imageUrl || ''
+                })
+                const toasts = toast.success("Your post is Live Now")
+        }
+        else (toast.info('Your post is empty'))
+
+        setInput("")
+        setSingleImg('')
+    }
+
+
+
+
     return (
         <div className='feed'>
             <ToastContainer  theme= "colored" autoClose= {4000} position= "bottom-right"/>
@@ -169,19 +281,34 @@ const Index = ({ user }) => {
             <div className='feed__inputContainer'>
                 <div className='feed__input'>
                     <CreateIcon />
-                    <form>
+                    {/* <form>
                         <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
                         <ToggleButtonExample />
                         <button type='submit' onClick={sendPost}>send</button>
+                    </form> */}
+                      <form >
+                        <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
+                        <input type='file' onChange={handleImage} className='abc' style={{ display: "none" }} ref={inputUpload} />
+                        <SendIcon  type='submit' onClick={uploadImage} className='sendicon'  />
+
                     </form>
                 </div>
 
                 <div className='feed__inputoptions'>
-                    <Inputoption Icon={ImageIcon} title='Photo' color='#70B5F9' />
+                    <Inputoption Icon={ImageIcon} title='Photo' color='#70B5F9' onClick={() => { inputUpload.current.click() }} />
                     <Inputoption Icon={SubscriptionsIcon} title='Subscription' color='#E7A33E' />
                     <Inputoption Icon={EventIcon} title='Event' color='#C0CBCD' />
                     <Inputoption Icon={CalendarViewDayIcon} title='Write article' color='#7FC15E' />
                 </div>
+
+                {progress > 0 ?
+                    //  <progress max="100" value={progress} /> 
+                    <ProgressBar >
+                        <ProgressBar striped variant="success" now={progress} key={1} />
+                        <ProgressBar variant="warning" now={progress} key={2} label={`${progress}%`} />
+                        <ProgressBar striped variant="danger" now={progress} key={3} />
+                    </ProgressBar>
+                    : null}
 
             </div>
 
@@ -196,12 +323,11 @@ const Index = ({ user }) => {
                             privacy={elem.data.privates}
                             message={elem.data.message}
                             photoUrl={elem.data.photoURL}
+                            src={elem.data.imgUrl}
                             Edit={() => { editPost(elem) }}
                             Delete={() => { deletePost(elem) }}
                             Pri={() => { editPrivacy(elem) }}
                         />
-
-
                     }
                 })}
 

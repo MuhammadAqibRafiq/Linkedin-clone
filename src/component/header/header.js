@@ -14,7 +14,7 @@ import { auth } from '../../firebase';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom'
 import {useNavigate} from 'react-router-dom';
-import { Avatar } from '@material-ui/core'
+// import { Avatar } from '@material-ui/core'
 
 
 const Header = ({ user }) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './feed.css'
 import CreateIcon from '@material-ui/icons/Create'
 import Inputoption from './inputoption'
@@ -7,7 +7,7 @@ import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import EventIcon from '@mui/icons-material/Event';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import Posts from '../Post/Post';
-import { db } from '../../firebase'
+import { db, storage } from '../../firebase'
 import firebase from 'firebase/compat/app';
 import {
     updateDoc,
@@ -18,8 +18,9 @@ import {
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import Aos from "aos";
 import "aos/dist/aos.css";
-// import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { ToastContainer, toast } from 'react-toastify';
+import ProgressBar from 'react-bootstrap/ProgressBar'
+import SendIcon from '@mui/icons-material/Send';
 
 
 const Feed = ({ user }) => {
@@ -27,7 +28,12 @@ const Feed = ({ user }) => {
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
     const [privates, setPrivates] = useState('Public');
-    // const [img, setImg] = useState('');
+    const [singleImg, setSingleImg] = useState(null);
+    const inputUpload = useRef();
+    const [progress, setProgress] = useState(0);
+
+    const milliseconds = new Date().getTime()
+    // console.log(milliseconds);
 
 
     useEffect(() => {
@@ -39,33 +45,32 @@ const Feed = ({ user }) => {
                 }
             )))
         });
-        Aos.init({ duration: 1000 });
+        Aos.init({ duration: 500 });
     }, [])
-
 
 
     // console.log(user)
     // console.log(post)
 
-    const sendPost = async (e) => {
-        e.preventDefault();
-        //    console.log(post)
-        if (input) {
-            await db.collection('posts').add({
-                name: user.displayName,
-                discription: user.email,
-                message: input,
-                photoURL: user.photoURL || '',
-                timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-                privates: privates
-            })
-              const toasts =  toast.success("Your post is Live Now") 
-            
-        } else (
-             toast.info('Your post is empty')
-        )
-        setInput("");
-    }
+    // const sendPost = async (e) => {
+    //     e.preventDefault();
+    //     //    console.log(post)
+    //    if (input) {
+    //         await db.collection('posts').add({
+    //             name: user.displayName,
+    //             discription: user.email,
+    //             message: input,
+    //             photoURL: user.photoURL || '',
+    //             timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+    //             privates: privates
+    //         })
+    //         const toasts = toast.success("Your post is Live Now")
+
+    //     } else (
+    //         toast.info('Your post is empty')
+    //     )
+    //     setInput("");
+    // } 
 
 
     function ToggleButtonExample() {
@@ -73,10 +78,8 @@ const Feed = ({ user }) => {
             { name: 'Pvt', value: 'Private' },
             { name: 'Pub', value: 'Public' },
         ];
-
         return (
             <>
-
                 <ButtonGroup >
                     {radios.map((radio, idx) => (
 
@@ -108,10 +111,10 @@ const Feed = ({ user }) => {
             const docRef = doc(db, "posts", deleteDiary.id);
             await deleteDoc(docRef);
 
-            const toasts =  toast.error("Post delete successfully") 
+            const toasts = toast.error("Post delete successfully")
 
         } else (
-            toast.info("you can only delete your post") 
+            toast.info("you can only delete your post")
         )
     }
 
@@ -128,13 +131,13 @@ const Feed = ({ user }) => {
 
                 updateDoc(docRef, payload);
 
-                const toasts =  toast.success("Post Edit successfully") 
+                const toasts = toast.success("Post Edit successfully")
 
             } else (
-                toast.error("empty post can't be edit") 
+                toast.error("empty post can't be edit")
             )
         } else (
-            toast.error("you can only edit your own post") 
+            toast.error("you can only edit your own post")
         )
 
     };
@@ -144,7 +147,6 @@ const Feed = ({ user }) => {
         console.log(editDiary)
 
         if (user.email === editDiary.data.discription) {
-            // const privates = setPrivates(!privates);
             const docRef = doc(db, "posts", editDiary.id);
             const payload = { privates, timestamp: serverTimestamp() };
 
@@ -157,32 +159,142 @@ const Feed = ({ user }) => {
     };
 
 
+    ////upload image///
+
+    function handleImage(e) {
+        e.preventDefault();
+        let pickedfile;
+        if (e.target.files && e.target.files.length > 0) {
+            pickedfile = e.target.files[0];
+            setSingleImg(pickedfile)
+
+        }
+    }
+
+    function uploadImage(e) {
+        e.preventDefault();
+
+        //////its not a smart way but i didnt got any other solution /////
+
+        if (input && singleImg) {
+            const uploadTask = storage.ref(`SingleImage/${milliseconds}`)
+                .put(singleImg)
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    console.log(progress)
+                    setProgress(progress)
+                },
+                (err) => {
+                    console.log(err)
+                },
+                () => {
+                    storage.ref(`SingleImage/${milliseconds}`)
+                        .getDownloadURL()
+                        .then((imageUrl) => {
+                            db.collection('posts')
+                                .add({
+                                    name: user.displayName,
+                                    discription: user.email,
+                                    message: input,
+                                    photoURL: user.photoURL || '',
+                                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                                    privates: privates,
+                                    imgUrl: imageUrl || '',
+                                })
+                        }
+                        )
+                }
+            )
+            const toasts = toast.success("Your post is Live Now")
+        }
+        else if (singleImg) {
+            const uploadTask = storage.ref(`SingleImage/${milliseconds}`)
+                .put(singleImg)
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    console.log(progress)
+                    setProgress(progress)
+
+                },
+                (err) => {
+                    console.log(err)
+                },
+                () => {
+                    storage.ref(`SingleImage/${milliseconds}`)
+                        .getDownloadURL()
+                        .then((imageUrl) => {
+                            db.collection('posts')
+                                .add({
+                                    name: user.displayName,
+                                    discription: user.email,
+                                    message: input,
+                                    photoURL: user.photoURL || '',
+                                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                                    privates: privates,
+                                    imgUrl: imageUrl || '',
+                                })
+                        }
+                        )
+                }
+            )
+            const toasts = toast.success("Your post is Live Now")
+
+        } else if (input) {
+            db.collection('posts')
+                .add({
+                    name: user.displayName,
+                    discription: user.email,
+                    message: input,
+                    photoURL: user.photoURL || '',
+                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    privates: privates,
+                    // imgUrl: imageUrl || ''
+                })
+                const toasts = toast.success("Your post is Live Now")
+        }
+        else (toast.info('Your post is empty'))
+
+        setInput("")
+        setSingleImg('')
+    }
+
+
     return (
         <div className='feed'>
-                    <ToastContainer  theme= "colored" autoClose= {4000} position= "bottom-right"/>
+            <ToastContainer theme="colored" autoClose={4000} position="bottom-right" />
 
             <div className='feed__inputContainer'>
                 <div className='feed__input'>
                     <CreateIcon />
                     <form >
                         <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
-                        <ToggleButtonExample />
-                        <button type='submit' onClick={sendPost}>send</button>
+                        <input type='file' onChange={handleImage} className='abc' style={{ display: "none" }} ref={inputUpload} />
+                        {/* <button type='submit' onClick={uploadImage}>send</button> */}
+                        <SendIcon  type='submit' onClick={uploadImage} className='sendicon'  />
                     </form>
-                    {/* <form >
-                        <input type='file' value={file} onChange={(e) => setFile(e.target.files[0])} />
-                        <button type='submit' onClick={onUpload}>send</button>
-                    </form> */}
                 </div>
 
                 <div className='feed__inputoptions'>
-                    <Inputoption Icon={ImageIcon} title='Photo' color='#70B5F9' />
+
+                    <Inputoption Icon={ImageIcon} title='Photo' color='#70B5F9' onClick={() => { inputUpload.current.click() }} />
                     <Inputoption Icon={SubscriptionsIcon} title='Subscription' color='#E7A33E' />
                     <Inputoption Icon={EventIcon} title='Event' color='#C0CBCD' />
                     <Inputoption Icon={CalendarViewDayIcon} title='Write article' color='#7FC15E' />
 
                 </div>
 
+                {progress > 0 ?
+                    //  <progress max="100" value={progress} /> 
+                    <ProgressBar >
+                        <ProgressBar striped variant="success" now={progress} key={1} />
+                        <ProgressBar variant="warning" now={progress} key={2} label={`${progress}%`} />
+                        <ProgressBar striped variant="danger" now={progress} key={3} />
+                    </ProgressBar>
+                    : null}
             </div>
 
             <div className='' >
@@ -190,17 +302,21 @@ const Feed = ({ user }) => {
                 {post.map((elem, ind) => {
                     // console.log(elem)
                     if (elem.data.privates === 'Public') {
-                        return <div data-aos="zoom-in-up" key={ind}><Posts
-                            key={ind}
-                            name={elem.data.name}
-                            // description={elem.data.discription}
-                            privacy={elem.data.privates}
-                            message={elem.data.message}
-                            photoUrl={elem.data.photoURL}
-                            Edit={() => { editPost(elem) }}
-                            Delete={() => { deletePost(elem) }}
-                            Pri={() => { editPrivacy(elem) }}
-                        /></div>
+                        return <div data-aos="zoom-in-up" key={ind}>  
+                         <Posts
+                                key={ind}
+                                name={elem.data.name}
+                                // description={elem.data.discription}
+                                privacy={elem.data.privates}
+                                message={elem.data.message}
+                                photoUrl={elem.data.photoURL}
+                                src={elem.data.imgUrl}
+                                Edit={() => { editPost(elem) }}
+                                Delete={() => { deletePost(elem) }}
+                                Pri={() => { editPrivacy(elem) }}
+                            />
+
+                        </div>
                     }
                 })}
 
