@@ -24,7 +24,7 @@ const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri , src ,onCl
                 <div className='d-flex'>
                     <Avatar src={photoUrl} />
                     <div className='post__info'>
-                        <h2>{name}</h2>
+                        <h2 style={{textTransform: "capitalize"}}>{name}</h2>
                         <p>{privacy}</p>
                     </div></div>
 

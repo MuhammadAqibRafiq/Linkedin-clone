@@ -10,7 +10,7 @@ const sidebar = ({ user }) => {
             <div className='sidebar__top'>
                 <img src='https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' alt='' />
                 <Avatar className='sidebar__avatar' src={user ? user.photoURL : null} alt={user ? user.displayName : null} />
-                <h2>{user ? user.displayName : null}</h2>
+                <h2 style={{textTransform: "capitalize"}} >{user ? user.displayName : null}</h2>
                 <h4 style={{ padding: '10px' }}>{user ? user.email : null}</h4>
             </div>
 
