@@ -1,0 +1,31 @@
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+
+    /* this is what centers your element in the fixed wrapper*/
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center; /* aligns on vertical for column */
+    align-items: center; /* aligns on horizontal for column */
+    
+    /* just for styling to see the limits */
+  
+    box-sizing: border-box;
+    
+    /* due to stickey header (index 1020)  */
+    z-index: 1030;
+    cursor: pointer;
+
+}
+.backdrop img {
+    display: block;
+    max-width: 85%;
+    max-height: 80% ;
+    margin: 6px auto;
+    box-shadow: 3px , 5px 7px rgba(0,0,0,0.5);
+    border: 3px solid white;
+}

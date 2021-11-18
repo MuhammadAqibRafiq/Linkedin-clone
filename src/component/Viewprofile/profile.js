@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 
 
-const Profile = ({ user }) => {
+const Profile = ({ user ,setSelectedImg }) => {
 
     const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const Profile = ({ user }) => {
         <div className='d-flex mt-3 justify-content-center'>
             {user ?
                 <>
-                    <Profiles user={user} />
+                    <Profiles user={user} setSelectedImg={setSelectedImg}/>
                     <Profilesidebar user={user} />
                 </>
                 :

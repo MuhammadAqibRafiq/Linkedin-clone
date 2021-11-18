@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Header from './component/header/header';
 import { login, logout, selectUser } from './features/userSlice';
@@ -9,8 +9,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './component/signup/signup'
 import ViewProfile from './component/Viewprofile/profile';
 import Landing from './landing';
+import Modal from './component/modal/modal'
 
 const App = () => {
+
+  const [selectedImg, setSelectedImg] = useState(null)
 
   const user = useSelector(selectUser);
   const dispatch = useDispatch()
@@ -30,7 +33,7 @@ const App = () => {
     })
   }, [])
 
-
+  console.log(selectedImg)
   return (
 
     <Router>
@@ -44,21 +47,21 @@ const App = () => {
             <>
               <Routes>
                 <Route exact path='/' element={<Login />} user={user} />
-                <Route  path='/signup' element={<Signup />} user={user} />
+                <Route path='/signup' element={<Signup />} user={user} />
                 <Route exact path='/login' element={<Login />} user={user} />
-                <Route path='/profile' element={<ViewProfile user={user} />}  />
+                <Route path='/profile' element={<ViewProfile user={user} />} />
 
               </Routes>
             </>
             :
-           
+            <>
               <Routes>
-                <Route path='/profile' element={<ViewProfile user={user} />}  />
-                <Route exact path='/' element={<Landing user={user} />}  />
-                <Route  path='/signup' element={<Signup />} user={user} />
-
-               </Routes>  
-      
+                <Route path='/profile' element={<ViewProfile user={user} setSelectedImg={setSelectedImg} />} />
+                <Route exact path='/' element={<Landing user={user} setSelectedImg={setSelectedImg} />} />
+                <Route path='/signup' element={<Signup />} user={user} />
+              </Routes>
+              {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />}
+            </>
           }
         </div>
       </div>

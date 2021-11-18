@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { auth } from '../../firebase';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom'
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import { Avatar } from '@material-ui/core'
 
 
@@ -29,7 +29,7 @@ const Header = ({ user }) => {
         navigate('/')
     }
 
-  
+
 
     return (
 
@@ -41,7 +41,7 @@ const Header = ({ user }) => {
 
                     {user ?
                         <>
-                          <Link to='/' style={{ textDecoration: "none" }} ><img src={Linkedin} alt='' width='50px' /></Link>
+                            <Link to='/' style={{ textDecoration: "none" }} ><img src={Linkedin} alt='' width='50px' /></Link>
                             <div className='header__search'>
                                 <SearchIcon />
                                 <input type='text' placeholder='Search...' />
@@ -67,7 +67,7 @@ const Header = ({ user }) => {
                     {user ?
                         <Nav className='d-flex justify-content-end' >
 
-                           <Nav.Link className='d-flex justify-content-center' as={Link} to="/"><HeaderOption Icon={Home} title='Home' /> </Nav.Link>
+                            <Nav.Link className='d-flex justify-content-center' as={Link} to="/"><HeaderOption Icon={Home} title='Home' /> </Nav.Link>
                             <HeaderOption Icon={SupervisorAccount} title='My Network' />
                             <HeaderOption Icon={ChatBubbleIcon} title='Chat' />
                             <HeaderOption Icon={WorkIcon} title='Job' />
@@ -85,8 +85,10 @@ const Header = ({ user }) => {
                         </Nav>
                         :
                         <>
-                            <Nav.Link style={{ color: 'black' }} className='header__joinnow' as={Link} to="/signup">JOIN NOW</Nav.Link>
-                            <Button style={{ borderRadius: '20px' }} variant="outline-primary" as={Link} to="/login">Sign in</Button>
+
+                            <Button style={{ borderRadius: '20px' }} variant="outline-primary d-flex justify-content-center" as={Link} to="/login">Sign in</Button>
+                            <Nav.Link style={{ color: 'black' }} className='header__joinnow d-flex justify-content-center' as={Link} to="/signup">JOIN NOW</Nav.Link>
+
                         </>
                     }
                 </Navbar.Collapse >

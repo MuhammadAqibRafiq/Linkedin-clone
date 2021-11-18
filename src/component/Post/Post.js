@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core'
-import React from 'react'
+import React,{useState} from 'react'
 import './post.css'
 import Inputoption from '../feed/inputoption'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -7,10 +7,13 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from '@mui/icons-material/Share';
 import SendIcon from '@mui/icons-material/Send';
 import PostDropdown from './postdropdown'
+import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 
 
 
-const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri , src}) => {
+const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri , src ,onClick}) => {
+
+    const [privates, setPrivates] = useState('Public');
 
     return (
         <div  className='post'>
@@ -34,8 +37,8 @@ const Post = ({ name, privacy, message, photoUrl, Edit , Delete ,Pri , src}) => 
 
             <div className='post__body'>
                 <p>{message}</p>
-                <div className='d-flex'>
-                <img width='100%' src={src} onError={(event) => event.target.removeAttribute('src')} />
+                <div className='d-flex'  onClick={onClick}>
+                <img width='100%' src={src} onError={(event) => event.target.removeAttribute('src')}  style={{cursor:'pointer'}}/>
                 {/* <img width='100%' src={src} onError={(event) => event.target.removeAttribute('src')} /> */}
                 </div>
             </div>

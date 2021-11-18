@@ -23,7 +23,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import SendIcon from '@mui/icons-material/Send';
 
 
-const Feed = ({ user }) => {
+const Feed = ({ user , setSelectedImg }) => {
 
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
@@ -303,9 +303,11 @@ const Feed = ({ user }) => {
                 {post.map((elem, ind) => {
                     // console.log(elem)
                     if (elem.data.privates === 'Public') {
-                        return <div data-aos="zoom-in-up" key={ind}>  
+                        return <div data-aos="zoom-in-up" key={ind} 
+                       >  
                          <Posts
                                 key={ind}
+                                onClick={()=>setSelectedImg(elem.data.imgUrl)}
                                 name={elem.data.name}
                                 // description={elem.data.discription}
                                 privacy={elem.data.privates}
