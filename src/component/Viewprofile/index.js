@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './profile.css';
 import '../feed/feed.css'
 import CreateIcon from '@material-ui/icons/Create'
@@ -66,7 +66,7 @@ const Index = ({ user }) => {
     //             privates: privates
     //         } )
     //         const toasts =  toast.success("Your post is Live Now") 
-           
+
     //     } else (
     //         toast.info('Your post is empty')
     //     )
@@ -114,7 +114,7 @@ const Index = ({ user }) => {
             const docRef = doc(db, "posts", deleteDiary.id);
             await deleteDoc(docRef);
 
-            const toasts =  toast.error("Post delete successfully") 
+            const toasts = toast.error("Post delete successfully")
 
         } else (
             toast.info("you can only delete your post")
@@ -134,7 +134,7 @@ const Index = ({ user }) => {
 
                 updateDoc(docRef, payload);
 
-                const toasts =  toast.success("Post Edit successfully") 
+                const toasts = toast.success("Post Edit successfully")
             }
             else (
                 toast.error("empty post can't be edit")
@@ -156,7 +156,7 @@ const Index = ({ user }) => {
 
             updateDoc(docRef, payload);
 
-        }   else (
+        } else (
             toast.error("you can only edit your post ")
         )
     };
@@ -256,7 +256,7 @@ const Index = ({ user }) => {
                     privates: privates,
                     // imgUrl: imageUrl || ''
                 })
-                const toasts = toast.success("Your post is Live Now")
+            const toasts = toast.success("Your post is Live Now")
         }
         else (toast.info('Your post is empty'))
 
@@ -269,7 +269,7 @@ const Index = ({ user }) => {
 
     return (
         <div className='feed'>
-            <ToastContainer  theme= "colored" autoClose= {4000} position= "bottom-right"/>
+            <ToastContainer theme="colored" autoClose={4000} position="bottom-right" />
 
             <div className='profile__top mb-4'>
                 <img src='https://images.pexels.com/photos/273935/pexels-photo-273935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' alt='' />
@@ -286,12 +286,15 @@ const Index = ({ user }) => {
                         <ToggleButtonExample />
                         <button type='submit' onClick={sendPost}>send</button>
                     </form> */}
-                      <form >
+                    <form >
                         <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
+                        <div style={{ display: 'none' }}><ToggleButtonExample /></div>
                         <input type='file' onChange={handleImage} className='abc' style={{ display: "none" }} ref={inputUpload} />
-                        <SendIcon  type='submit' onClick={uploadImage} className='sendicon'  />
+                        <SendIcon type='submit' onClick={uploadImage} className='sendicon' />
+                        <button type='submit' onClick={uploadImage} style={{ display: "none" }}>send</button>
 
                     </form>
+
                 </div>
 
                 <div className='feed__inputoptions'>

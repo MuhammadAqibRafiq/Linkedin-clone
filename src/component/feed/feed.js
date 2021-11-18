@@ -271,10 +271,11 @@ const Feed = ({ user }) => {
                 <div className='feed__input'>
                     <CreateIcon />
                     <form >
-                        <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
+                    <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
+                        <div style={{ display: 'none' }}><ToggleButtonExample /></div>
                         <input type='file' onChange={handleImage} className='abc' style={{ display: "none" }} ref={inputUpload} />
-                        {/* <button type='submit' onClick={uploadImage}>send</button> */}
-                        <SendIcon  type='submit' onClick={uploadImage} className='sendicon'  />
+                        <SendIcon type='submit' onClick={uploadImage} className='sendicon' />
+                        <button type='submit' onClick={uploadImage} style={{ display: "none" }}>send</button>
                     </form>
                 </div>
 
