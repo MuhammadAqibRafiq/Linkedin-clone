@@ -31,3 +31,16 @@
     background: white;
     border: white;
 }
+.post__comment{
+    display: flex;
+}
+.post__commentinfo{
+    margin-left:15px ;
+}
+
+/* .comment{
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+} */

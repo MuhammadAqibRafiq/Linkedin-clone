@@ -23,7 +23,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import SendIcon from '@mui/icons-material/Send';
 
 
-const Feed = ({ user , setSelectedImg }) => {
+const Feed = ({ user, setSelectedImg }) => {
 
     const [input, setInput] = useState('');
     const [post, setPost] = useState([]);
@@ -47,6 +47,9 @@ const Feed = ({ user , setSelectedImg }) => {
         });
         Aos.init({ duration: 500 });
     }, [])
+
+    // console.log(post)
+
 
 
     // console.log(user)
@@ -254,7 +257,7 @@ const Feed = ({ user , setSelectedImg }) => {
                     privates: privates,
                     // imgUrl: imageUrl || ''
                 })
-                const toasts = toast.success("Your post is Live Now")
+            const toasts = toast.success("Your post is Live Now")
         }
         else (toast.info('Your post is empty'))
 
@@ -271,7 +274,7 @@ const Feed = ({ user , setSelectedImg }) => {
                 <div className='feed__input'>
                     <CreateIcon />
                     <form >
-                    <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
+                        <input type='text' placeholder='Start a post' value={input} onChange={(e) => setInput(e.target.value)} />
                         <div style={{ display: 'none' }}><ToggleButtonExample /></div>
                         <input type='file' onChange={handleImage} className='abc' style={{ display: "none" }} ref={inputUpload} />
                         <SendIcon type='submit' onClick={uploadImage} className='sendicon' />
@@ -303,11 +306,11 @@ const Feed = ({ user , setSelectedImg }) => {
                 {post.map((elem, ind) => {
                     // console.log(elem)
                     if (elem.data.privates === 'Public') {
-                        return <div data-aos="zoom-in-up" key={ind} 
-                       >  
-                         <Posts
+                        return <div data-aos="zoom-in-up" key={ind}
+                        >
+                            <Posts
                                 key={ind}
-                                onClick={()=>setSelectedImg(elem.data.imgUrl)}
+                                onClick={() => setSelectedImg(elem.data.imgUrl)}
                                 name={elem.data.name}
                                 // description={elem.data.discription}
                                 privacy={elem.data.privates}
@@ -317,8 +320,8 @@ const Feed = ({ user , setSelectedImg }) => {
                                 Edit={() => { editPost(elem) }}
                                 Delete={() => { deletePost(elem) }}
                                 Pri={() => { editPrivacy(elem) }}
+                                elem={elem}
                             />
-
                         </div>
                     }
                 })}

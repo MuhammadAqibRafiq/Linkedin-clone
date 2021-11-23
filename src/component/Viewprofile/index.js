@@ -332,6 +332,7 @@ const Index = ({ user , setSelectedImg }) => {
                             Edit={() => { editPost(elem) }}
                             Delete={() => { deletePost(elem) }}
                             Pri={() => { editPrivacy(elem) }}
+                            elem={elem}
                         />
                         </div>
                     }
