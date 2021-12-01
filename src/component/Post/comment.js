@@ -17,14 +17,18 @@ import firebase from 'firebase/compat/app';
 import { ToastContainer, toast } from 'react-toastify';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import { updateDoc, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Likes from './like'
 
 
-const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onClick, comEdit, comDelete, elem }) => {
+const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onClick, likeHandler, elem, likelength, like, setLike, setLikelength }) => {
 
     const user = useSelector(selectUser);
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState('');
     const [showComment, setShowComment] = useState(false);
+    const [commentlength, setCommentlength] = useState('')
 
 
     useEffect(() => {
@@ -34,14 +38,16 @@ const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onCl
                     id: doc.id,
                     data: doc.data()
                 }
+
             )))
+            setCommentlength(snapshot.size);
         });
 
     }, [])
 
 
-    const comentHandler = (comValue) => {
-        console.log(comValue.data)
+    function comentHandler(comValue) {
+
         if (comment) {
             db.collection('posts').doc(comValue.id).collection("Comments")
                 .add({
@@ -51,6 +57,7 @@ const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onCl
                     photoURL: user.photoURL || '',
                     timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
                 })
+
         } else (alert("comment box is empty"))
         setComment('')
     }
@@ -82,26 +89,46 @@ const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onCl
 
     };
 
+    console.log(like)
+
 
     return (
         <div className='comment'>
             <ToastContainer theme="colored" autoClose={4000} position="bottom-right" />
 
+            <div className='comment__top'>
+
+                <div>
+                    <ThumbUpAltIcon style={{ borderRadius: "15px", background: "#2196f3", padding: "2px", color: "white", fontSize: '22px' }} />
+                    <FavoriteIcon style={{ borderRadius: "15px", background: "#9e9e9e73", padding: "2px", color: "#d00303", marginLeft: '5px', fontSize: '22px' }} />
+                    <span style={{ marginLeft: '5px' }}>{likelength} Likes </span>
+                </div>
+
+                <div>{commentlength} comments</div>
+
+            </div>
+
+
             <div className='post__button'>
-                <Inputoption Icon={ThumbUpOffAltIcon} title='like' color='gray' />
-                <Inputoption Icon={CommentIcon} title='coment' color='gray' onClick={() => setShowComment(!showComment)} />
+
+                <Inputoption Icon={ThumbUpOffAltIcon} title='like' color='gray' onClick={likeHandler} />
+                <Inputoption Icon={CommentIcon} title='comment' color='gray' onClick={() => setShowComment(!showComment)} />
                 <Inputoption Icon={ShareIcon} title='share' color='gray' />
                 <Inputoption Icon={SendIcon} title='send' color='gray' />
+
             </div>
+
 
             {showComment ?
 
-                <div className='feed__inputContainer'>
+                <div className='comment__inputContainer'>
 
                     <div className='feed__input'>
                         <CreateIcon />
-                        <form type="submit" >
+                        <form type='submit' >
                             <input type='text' placeholder='Add a comment...' value={comment} onChange={(e) => setComment(e.target.value)} />
+                            {/* <button onClick={() => {comentHandler(elem)}}  style={{ display: "none" }} type='submit' >a</button> */}
+
                         </form>
 
                         <div style={{ cursor: 'pointer' }}>
@@ -115,26 +142,27 @@ const Coment = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onCl
 
             {
                 comments && comments.map((com, ind) => {
-                    console.log(ind)
+
                     return <div className='post__header' key={ind} >
+
                         {showComment ?
                             <>
                                 <div className='d-flex'>
                                     <Avatar src={com.data.photoURL} />
                                     <div className='post__info'>
                                         <h2 style={{ textTransform: "capitalize" }}>{com.data.name}  </h2>
-                                        <p>{com.data.comment}</p>
+                                        <p>{com.data.comment} </p>
                                     </div>
                                 </div>
 
                                 <div>
                                     {user.email === com.data.discription && elem ?
                                         <Commentdropdown comEdit={() => { editComment(com) }} comDelete={() => { deleteComment(com) }} />
-                                        :  null }
+                                        : null}
                                 </div>
                             </>
 
-                            : null }
+                            : null}
                     </div>
                 })
             }

@@ -114,11 +114,12 @@ const Feed = ({ user, setSelectedImg }) => {
             const docRef = doc(db, "posts", deleteDiary.id);
             await deleteDoc(docRef);
 
-            const toasts = toast.error("Post delete successfully")
+            // const toasts = toast.error("Post delete successfully")
 
-        } else (
-            toast.info("you can only delete your post")
-        )
+        } 
+        // else (
+        //     toast.info("you can only delete your post")
+        // )
     }
 
     const editPost = async (editDiary) => {
@@ -136,12 +137,14 @@ const Feed = ({ user, setSelectedImg }) => {
 
                 const toasts = toast.success("Post Edit successfully")
 
-            } else (
-                toast.error("empty post can't be edit")
-            )
-        } else (
-            toast.error("you can only edit your own post")
-        )
+            } 
+            // else (
+            //     toast.error("empty post can't be edit")
+            // )
+        } 
+        // else (
+        //     toast.error("you can only edit your own post")
+        // )
 
     };
 
@@ -155,9 +158,8 @@ const Feed = ({ user, setSelectedImg }) => {
 
             updateDoc(docRef, payload);
 
-        } else (
-            toast.error("you can only edit your post ")
-        )
+        } 
+        // else (toast.error("you can only edit your post "))
 
     };
 
@@ -210,7 +212,7 @@ const Feed = ({ user, setSelectedImg }) => {
                         )
                 }
             )
-            const toasts = toast.success("Your post is Live Now")
+            // const toasts = toast.success("Your post is Live Now")
         }
         else if (singleImg) {
             const uploadTask = storage.ref(`SingleImage/${milliseconds}`)
@@ -244,7 +246,7 @@ const Feed = ({ user, setSelectedImg }) => {
                         )
                 }
             )
-            const toasts = toast.success("Your post is Live Now")
+            // const toasts = toast.success("Your post is Live Now")
 
         } else if (input) {
             db.collection('posts')
@@ -257,9 +259,9 @@ const Feed = ({ user, setSelectedImg }) => {
                     privates: privates,
                     // imgUrl: imageUrl || ''
                 })
-            const toasts = toast.success("Your post is Live Now")
+            // const toasts = toast.success("Your post is Live Now")
         }
-        else (toast.info('Your post is empty'))
+        // else (toast.info('Your post is empty'))
 
         setInput("")
         setSingleImg('')

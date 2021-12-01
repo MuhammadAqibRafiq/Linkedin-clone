@@ -45,6 +45,10 @@
     color: gray;
     cursor: pointer;
 }
+/* .inputoption :active{
+    background: blue;
+    color: blueviolet;
+} */
 .inputoption:hover{
     background: whitesmoke;
     border-radius: 10px;

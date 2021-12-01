@@ -9,11 +9,51 @@ import SendIcon from '@mui/icons-material/Send';
 import PostDropdown from './postdropdown'
 import { ButtonGroup, ToggleButton } from 'react-bootstrap'
 import Comment from './comment';
+import Likes from './like';
 
 
-const Post = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onClick, comEdit, comDelete ,elem }) => {
+import { db } from '../../firebase'
+import firebase from 'firebase/compat/app';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/userSlice';
+
+
+const Post = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onClick, elem }) => {
 
     const [privates, setPrivates] = useState('Public');
+
+
+    const user = useSelector(selectUser);
+    const [checked, setChecked] = useState(true);
+    const [likelength, setLikelength] = useState('')
+    // const [like, setLike] = useState('');
+
+
+    const [like, setLike] = useState('');
+    function likeHandler(likeValue) {
+        setChecked(!checked);
+        if (checked === true) {
+            db.collection('posts').doc(likeValue.id).collection("Likes").doc(user.email)
+                .set({
+                    name: user.displayName,
+                    discription: user.email,
+                    like: checked,
+                    photoURL: user.photoURL || '',
+                    timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+                })
+        } else if (checked === false) {
+            const docRef = firebase.firestore().collection("posts").doc(elem.id).collection("Likes");
+            // delete the document
+            docRef.doc(user.email).delete();
+        }
+
+        // setChecked('')
+        // console.log(likeValue)
+    }
+
+
+
+
 
     return (
         <div className='post'>
@@ -43,15 +83,15 @@ const Post = ({ name, privacy, message, photoUrl, Edit, Delete, Pri, src, onClic
             </div>
 
             {/* <div className='post__button'>
-                <Inputoption Icon={ThumbUpOffAltIcon} title='like' color='gray' />
+                <Inputoption Icon={ThumbUpOffAltIcon} title='like' color='gray' onClick={()=>{likeHandler(elem)}} />
                 <Inputoption Icon={CommentIcon} title='coment' color='gray' />
                 <Inputoption Icon={ShareIcon} title='share' color='gray' />
                 <Inputoption Icon={SendIcon} title='send' color='gray' />
             </div> */}
 
 
-            <Comment photoUrl={photoUrl} elem={elem}/>
-
+            <Comment photoUrl={photoUrl} elem={elem} likeHandler={() => { likeHandler(elem) }} likelength={likelength}  like={like}  setLike={setLike} setLikelength={setLikelength} />
+            <Likes elem={elem} setLikelength={setLikelength} setLike={setLike} like={like}  likeHandler={() => { likeHandler(elem) }} />
 
         </div>
     )

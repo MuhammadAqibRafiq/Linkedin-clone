@@ -37,10 +37,15 @@
 .post__commentinfo{
     margin-left:15px ;
 }
-
-/* .comment{
+.comment__top{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+.comment__inputContainer{
     background: white;
-    padding: 10px;
-    margin-bottom: 10px;
+    /* padding: 10px; */
+    padding-bottom: 20px;
     border-radius: 10px;
-} */
+    margin-bottom: 20px;
+}
